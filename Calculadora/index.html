@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Document</title>
+</head>
+<body onkeypress="teclado()">
+  
+
+    <div class="calculador">
+        <table class="teclado">
+            <tr>
+                <input type="text" id="display" disabled>
+            </tr>
+    
+            <tr>
+                <td><input onclick="atualizarDisplay(this)" value="7" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="8" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="9" type="button"></input></td> 
+                <td><input  onclick="operadores(this)" value="*" type="button"></input></td>     
+            </tr>
+    
+            <tr>
+                <td><input onclick="atualizarDisplay(this)" value="4" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="5" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="6" type="button"></input></td>
+                <td><input  onclick="operadores(this)" value="+" type="button"></input></td>
+            </tr>
+    
+            <tr>
+                <td><input onclick="atualizarDisplay(this)" value="1" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="2" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="3" type="button"></input></td>
+                <td><input  onclick="operadores(this)" value="-" type="button"></input></td>
+            </tr>
+    
+            <tr>
+                <td><input onclick="clearDisplay()" value="C" type="button"></input></td>
+                <td><input onclick="atualizarDisplay(this)" value="0" type="button"></input></td>
+                <td><input onclick="funcao()" value="=" type="button"></input></td>
+                <td><input onclick="operadores(this)" value="/" type="button"></input></td>
+            </tr>
+    
+            
+        </table>
+    </div>
+   
+<script>
+
+    function atualizarDisplay(bnt){
+        const display = document.getElementById('display');
+        if(display.value.lenght === 9){
+            return;
+        } else if (display.value === '0'){
+            display.value = bnt.value;
+        } else {
+            display.value += bnt.value;
+        }
+    }
+
+    //Limpar a tela do display
+    function clearDisplay(){
+        document.getElementById('display').value = '0'
+    }
+
+    //Armazenar o simbolo dos operadores matematicos
+    let operador = '';
+    //Armazenar o primeiro valor digitado no display
+    let valor1 = 0;
+
+    // a função armazena nas variaveia acima o operador e o primeiro valor
+    // ao terminar de salvar ele limpa o display novamente
+    function operadores(tecla){
+        const display = document.getElementById('display');
+        valor1 = display.value;
+        operador = tecla.value;
+        display.value = '0';
+    }
+
+    //função para realizar as operações após clicar ou pressionar "="
+    function funcao(){
+        const display = document.getElementById('display');
+        let valor2 = display.value;
+        //armazena em valor 1 o resultado da operação de valor1 junto com o operador e o valor2
+        valor1 = eval(valor1+operador+valor2);
+        display.value = valor1;
+        //zera o operador matematico
+        operador = '';
+    }
+    //A função testa as teclas pressionadas no teclado
+    function teclado(){
+        //se for pressionado de 0 à 9 então ele atualiza o display
+        if (/([0-9])/.test(event.key)){
+            atualizarDisplay({value: event.key})
+        } // se for um dos operadores a ser digitado ele chama a função operadores acima
+         else if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+            operadores({value: event.key})
+        }// se for precionado a tecla enter ele dispara a função (funcao) que realiza a operação
+        else if(event.key === 'Enter'){
+            funcao();
+        } //caso qualquer outra tecla seja pressionada ele apenas limpa o display chamando a função ClearDisplay. 
+        else {
+            clearDisplay();
+        }
+    }
+
+</script>
+
+</body>
+</html>
